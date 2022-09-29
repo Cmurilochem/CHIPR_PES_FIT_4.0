@@ -23,7 +23,7 @@ When using this program, check the following references:
  
    A. J. C. Varandas, J. Chem. Phys. 138, 134117 (2013); https://doi.org/10.1063/1.4795826
  
-   C. M. R. Rocha and A. J. C. Varandas, J. Phys. Chem. A 2019, 123, 38, 8154; https://doi.org/10.1021/acs.jpca.9b03194
+   C. M. R. Rocha and A. J. C. Varandas, J. Phys. Chem. A 123, 38 (2019); https://doi.org/10.1021/acs.jpca.9b03194
  
    C. M. R. Rocha and A. J. C. Varandas, Phys. Chem. Chem. Phys. 21, 24406 (2019); https://doi.org/10.1039/c9cp04890a
  
