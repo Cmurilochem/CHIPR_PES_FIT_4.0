@@ -1,0 +1,25 @@
+!###############################################################################
+! THIS IS A USER SUPPLIED SUBROUTINE THAT CALCULATES THE SUM OF TWO- AND THREE-BOBY ENERGIES
+! FOR A GIVEN TETRATOMIC MOLECULE
+!###############################################################################
+
+      SUBROUTINE SUM23BD(R1,R2,R3,R4,R5,R6,SUMV23)
+      IMPLICIT NONE
+      INTEGER :: I
+      DOUBLE PRECISION :: R1,R2,R3,R4,R5,R6,SUMV23
+      DOUBLE PRECISION, DIMENSION(6) :: W
+      W(1)=R1
+      W(2)=R2
+      W(3)=R3
+      W(4)=R4
+      W(5)=R5
+      W(6)=R6
+!
+!     CALL HERE A FUNCTION OR SUBROUTINE THAT RETURNS
+!     THE VALUE OF THE SUM OF TWO- AND THREE-BODIES AT THIS GEOMETRY, 
+!     E.G., CALL POT23(W,SUMV23)
+!     THE SUBROUTINE CONTAING "POT23" CAN THEN BE INCLUDED AS AN ADDITIONAL ONE
+!     IN THE COMPILATION PROCESS OR HERE BELOW
+!
+      RETURN 
+      END
