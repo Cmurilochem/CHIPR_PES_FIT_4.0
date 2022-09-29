@@ -1,0 +1,328 @@
+!#######################################################################################
+!#######################################################################################
+
+CHIPR-4.0 is a general program to fit global potential energy surfaces (PESs) of diatomic, 
+triatomic and tetratomic molecules using ab initio data points as calibrating set and the 
+Combined-Hyperbolic-Inverse-Power-Representation (CHIPR) method.
+
+For diatomic molecules, the code also allows users obtain experimentally-derived 
+potential energy curves by performing a direct-fit to available spectroscopic data. 
+
+The program performs an automatic global minimum search on the final fitted PES, 
+harmonic vibrational analysis on the global minimum, in addition to provide ready-to-use 
+subroutines containing the fitted n-body terms. These are output as CHIPR_DIAT_FUNC.f90, 
+CHIPR_TRIAT_FUNC.f90 and CHIPR_TETRA_FUNC.f90 for two-body, three-body and four-body 
+terms, respectively.
+
+Authors:
+Carlos M. R. Rocha* (carlosmurilorocha@gmail.com)
+Antonio J. C. Varandas (varandas@uc.pt)
+
+When using this program, the user should cite:
+
+1). For the CHIPR method:
+
+ 1.a). "Combined-hyperbolic-inverse-power-representation of potential energy surfaces: 
+ A preliminary assessment for H3 and HO2"
+ A. J. C. Varandas, J. Chem. Phys. 138, 054120 (2013); https://doi.org/10.1063/1.4788912
+ 
+ 1.b). "Accurate combined-hyperbolic-inverse-power-representation of ab initio 
+ potential energy surface for the hydroperoxyl radical and dynamics study of O+OH
+ reaction"
+ A. J. C. Varandas, J. Chem. Phys. 138, 134117 (2013); https://doi.org/10.1063/1.4795826
+ 
+ 1. c) "Putting Together the Pieces: A Global Description of Va-
+lence and Long-Range Forces via Combined Hyperbolic Inverse Power Repre-
+sentation of the Potential Energy Surface", 
+A. J. C. Varandas, in: K. Han, T. Chu (Eds.), Reaction
+Rate Constant Computations: Theories and Applications, The Royal Society of
+Chemistry, 2013, Ch. 17, pp. 408–445; doi:10.1039/9781849737753-00408.
+
+ 1.d). "Accurate CHIPR Potential Energy Surface for the Lowest Triplet State of C3"
+ C. M. R. Rocha and A. J. C. Varandas, J. Phys. Chem. A 2019, 123, 38, 8154; 
+ https://doi.org/10.1021/acs.jpca.9b03194
+ 
+ 1.e). "A global CHIPR potential energy surface for ground-state C3H and 
+ exploratory dynamics studies of reaction C2+CH→C3+H"
+ C. M. R. Rocha and A. J. C. Varandas, Phys. Chem. Chem. Phys. 21, 24406 (2019); 
+ https://doi.org/10.1039/c9cp04890a
+ 
+2). For the code: 
+
+  2.a). "A General Code for Fitting Global Potential Energy Surfaces via CHIPR Method: 
+Triatomic Molecules" 
+  C. M. R. Rocha and A. J. C. Varandas
+  Comput. Phys. Commun. 247, 106913 (2020); https://doi.org/10.1016/j.cpc.2019.106913
+  
+  2.b). "A General Code for Fitting Global Potential Energy Surfaces via CHIPR Method: 
+  Direct-Fit Diatomics and Tetratomic Molecules" 
+  C. M. R. Rocha and A. J. C. Varandas, Comput. Phys. Commun. 258, 107556 (2021); https://doi.org/10.1016/j.cpc.2020.107556
+ 
+!#######################################################################################
+!#######################################################################################
+
+  CONTENTS
+
+    1). Units and conversion factors
+    2). Program dependencies
+    3). Source code and test runs
+    4). Compilation and execution
+    5). Note on use of output subroutines CHIPR_DIAT_FUNC.f90, CHIPR_TRIAT_FUNC.f90 and 
+CHIPR_TETRA_FUNC.f90
+
+!#######################################################################################
+!#######################################################################################
+
+1). Units and conversion factors 
+
+All distances and energies must be provided in a.u. (a0 and Eh, respectively). 
+For JOBTYP=DIRECTFIT runs, spectroscopic attributes are read in standard cm−1 units. 
+Output quantities are also given in a.u, with the exception of deviations and root 
+mean square deviations (rmsds) which are expressed in cm-1. (1 Eh=219474.6313702 cm−1).
+
+!#######################################################################################
+!#######################################################################################
+
+2). Program dependencies
+
+The user must ensure that the following utilities are available:
+
+  2.a) C-shell (tcsh or csh) command-line interpreter.
+  2.b) GNU Fortran compiler (gfortran).
+  2.c) Gnuplot command-line driven graphing utility.
+
+The program has been written to be used along with UNIX-based operating systems;
+this is a command-line utility with no graphical interface available. The user 
+should perform the proper adaptations whenever other platforms/utilities are envisaged.
+
+!#######################################################################################
+!#######################################################################################
+
+3). Source code and test runs
+
+CHIPR-4.0 is available as a zip archive file “CHIPR-4.0.zip” where its source code
+can be assessed; see “CHIPR-4.0 SOURCE CODE/” directory. In “CHIPR-4.0.zip”, 
+the user also finds test runs for C2(3Πu), N2(1Σ+g), C3(3A'), ground-state
+C3H, and for an exploratory ground-state PES of C2H2 employing all job types
+currently supported. For the JOBTYP=FITPOL cases, rmsds of 2.6, 33.3, 227.7, 673.9
+and 442.1 cm−1 , respectively, are obtained in these model systems. In the example 
+JOBTYP=DIRECTFIT runs for C2(3Πu) and C2(1Σ+g), the rmsds are 235.6 and 274.8 cm−1, 
+respectively, when considering the total set of ab initio plus experimental data. 
+The reader is directed to all the above examples for following this guide step-by-step.
+
+!#######################################################################################
+!#######################################################################################
+
+4). Compilation and execution
+
+The first step in the compilation is obviously to decompress the original zip file
+and enter the main ”CHIPR-4.0“ directory. For this, open a command line and use:
+
+  4.a) unzip CHIPR-4.0.zip
+  4.b) cd CHIPR -4.0/
+
+Inside ”CHIPR-4.0“, users will find all example runs discussed above each in their 
+own places, the directory source code “CHIPR-4.0 SOURCE CODE/” and the ”config.csh“ 
+script. To compile the code, one then needs to first make this latter executable. 
+This is accomplished by entering the command:
+
+  4.c) chmod +x config.csh
+
+To create a new job, the user must now make a new directory (say, ”FIT TEST/“) inside 
+”CHIPR-4.0“ but outside “CHIPR-4.0 SOURCE CODE/”:
+
+  4.d) mkdir FIT_TEST
+  4.e) cd FIT_TEST
+
+Similarly to the examples provided, this directory will harbor all input files, 
+system-specific routines and Gnuplot files needed for his/her chosen target system 
+and job. For the case of polynomial (or direct-) fits, the specific routines to be 
+edited can be copied to the user’s directory as
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+
+% For diatomics
+cp ../CHIPR-4.0 _SOURCE_CODE/WEIGHT_FUNC.f90 .
+
+% For triatomics
+cp ../CHIPR-4.0_SOURCE_CODE/WEIGHT_FUNC.f90 .
+cp ../CHIPR-4.0_SOURCE_CODE/SUM2BD.f90 .
+
+% For tetratomics
+cp ../CHIPR-4.0_SOURCE_CODE/WEIGHT_FUNC.f90 .
+cp ../CHIPR-4.0_SOURCE_CODE/SUM23BD.f90 .
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+
+Examples on how to adapt these modules according to the user’s own target system
+can be found in the test runs. For basis set calibrations, only the SUM2BD.f90 and
+SUM23BD.f90 routines must be copied and edited in triatomic and tetratomic fits,
+respectively. For diatomics, none of these actions are required. Gnuplot files to be
+placed inside “FIT TEST” assume well defined (and self-explanatory) labels and must
+be named according to the molecule and job type selected as
+
+• PLOT BASIS OPT CHIPR DIATOM.gnu
+• PLOT BASIS OPT CHIPR TRIATOM.gnu
+• PLOT BASIS OPT CHIPR TETRA.gnu
+• PLOT POL OPT CHIPR DIATOM.gnu
+• PLOT POL OPT CHIPR TRIATOM.gnu
+• PLOT POL OPT CHIPR TETRA.gnu
+
+Inside the test runs, users will also find examples of them. 
+
+Assuming that all the above files have been properly edited and placed inside
+“FIT TEST”, a Makefile can be generated by running, inside ”FIT TEST/“, the command:
+
+  4.f) ../config.csh
+
+In so doing, the user will be prompted to answer the following questions:
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+% Question # 1
+Do you want to fit a diatomic (diat), triatomic (triat) or tetratomic (tetra) ?
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+
+Please, answer this according to the type of system envisaged: diat for diatomic,
+triat for triatomic or tetra for a tetratomic molecule.
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+% Question # 2
+I am using gfortran. Do you agree on that ? [y/n]
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+
+If the user wants to use a different compiler (other than gfortran) answer this 
+question with n. If this is the case, remember to edit the final Makefile with the 
+preferred compiler options.
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+% Question # 3
+Are you doing a basis set calibration (bas), polynomial fit (pol) or 
+direct fit (dirfit) ?
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+
+Please, answer this according to the type of job run: bas for basis set contraction
+(JOBTYP=OPTBASIS), pol for polynomial optimization (JOBTYP=FITPOL) or dirfit
+for a diatomic direct-fit to experimental data (JOBTYP=DIRECTFIT).
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+% Question # 4
+Do you want to include any other additional subroutine into the program ? [y/n]
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+
+In this question, answer n if no extra subroutine need to be included into the 
+compilation. This option is suitable for simple jobs like in basis sets calibrations 
+and polynomial (or direct-fit) optimization in diatomics. For triatomics and 
+tetratomics, this will also be the case if users prefer to edit directly the 
+SUM2BD.f90 and SUM23BD.f90 modules, respectively, by copying inside them all 
+subroutines required to evaluate the sum of two- and two-plus-three-body potentials; 
+an example of this can be found in the C3 test run. Alternatively, if the latter 
+potentials are provided as separated user’s own module, Question #4 must be answered 
+with y. This is the case for the C3H and C2H2 test runs.
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+% Question # 5
+If yes, tell me its name, e. g., XXX.f or XXX.f90
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+
+If the answer to the Question #4 is yes, then the user will be asked to provide the
+name of the subroutine he/she wants to include in the compilation. Note that this
+file must also be contained in “FIT TEST”. In the C3H and C2H2 examples, they are
+HC3 V23 DMBE.f and C2H2 V23.f, respectively.
+
+The execution of ”config.csh“ script will terminate after some warning mes-
+sages. These are intended to make readers aware on which modules it has been
+found inside the working directory (those not contained in it have their paths set to
+“../CHIPR-4.0 SOURCE CODE/”) and also which input files the user is supposed
+to have in “FIT TEST”, depending on the job and molecule type so chosen.
+
+The above process will generate a Makefile, with the program being then compiled 
+with the commands:
+
+  4.g) make
+  4.h) make clean
+
+This will generate an executable file CHIPR.x. The program should now be run as
+
+  4.i) ./CHIPR. x
+
+To make users familiar with the program, it is a wise choice to first repeat all the
+above instructions inside any of the given example directories.
+
+!#####################################################################################
+!#####################################################################################
+
+5). Note on the use of the output subroutines CHIPR_DIAT_FUNC.f90, CHIPR_TRIAT_FUNC.f90 
+and CHIPR_TETRA_FUNC.f90
+
+As noted above, for JOBTYP=FITPOL or DIRECTFIT runs, the program automatically prints 
+out CHIPR diatomic, three-body and four-body ready-to-use subroutines. They are 
+contained in the CHIPR_DIAT_FUNC.f90, CHIPR_TRIAT_FUNC.f90 and CHIPR_TETRA_FUNC.f90 
+files, respectively. In order for an external (fortran) program to use them, the user 
+should run the following statements:
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+
+% For diatomics
+
+CALL CHIPR_DIAT(R,POT,DER,DVDR) 
+
+% For three-body energies
+
+CALL CHIPR_TRIAT(R,POT,DER,DVDR) 
+
+% For four-body energies
+
+CALL CHIPR_TETRA(R,POT,DER,DVDR)
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+
+In the above commands, R are double precision variables containing internuclear 
+coordinates (3D and 6D arrays for triatomics and tetratomics) and POT are returned 
+double precision values for the potentials, both in a.u. In turn, DER are logical 
+dummies that if set equal .TRUE., calculates analytic gradients at R. All first 
+derivatives with respect to internal coordinates are kept into the double precision 
+DVDR which, in the case of triatomics and tetratomics, is also a 3D and 6D arrays. 
+  
+Note that, besides DVDR, each  CHIPR_DIAT_FUNC.f90, CHIPR_TRIAT_FUNC.f90 and 
+CHIPR_TETRA_FUNC.f90 subprogram has built-in its own subroutine that also calculates 
+analytic derivatives with respect to Cartesian coordinates. They use DVDR together 
+with the chain rule to accomplish such a task and can be invoked by running: 
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+
+% For diatomics
+
+CALL CARTDERPES2BD(X,DVDX)
+
+% For three-body energies
+
+CALL CARTDERPES3BD(X,DVDX)
+
+% For four-body energies
+
+CALL CARTDERPES4BD(X,DVDX)
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+
+where X are, for diatomics, triatomics and tetratomics, 3D, 6D and 12D double 
+precision arrays, respectively, and DVDX (with the same dimension and nature of X) 
+keep the derivatives. 
+
+!#######################################################################################
+!#######################################################################################
