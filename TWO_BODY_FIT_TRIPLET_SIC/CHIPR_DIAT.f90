@@ -1,0 +1,82 @@
+!######################################################################################################
+! CHIPR MODEL DIATOMIC POTENTIAL
+!######################################################################################################
+      SUBROUTINE CHIPR_DIAT(BSORDER,POLORDER,C,R,POT,DIFFC)
+!######################################################################################################
+! BSORDER: DEFINES THE LENGHT OF CONTRACTION OF THE BASIS FUNCTIONS
+! POLORDER: DEFINES THE ORDER OF THE POLYNOMIAL
+! C IS THE VECTOR OF COEFFICIENTS
+! R: ARE THE DISTANCE IN A.U. 
+! POT: THE POTENTIAL IN A.U. 
+! DIFFC: DEVIVATIVE OF THE POLINOMIAL WITH RESPECT TO THE COEFFICIENTS TO BE USED IN LMDIF
+!######################################################################################################
+      USE COMMON_VAR, ONLY : Z,DEG,NC,NX
+      IMPLICIT NONE
+      INTEGER :: I,J
+! M: DEFINES THE LENGHT OF CONTRACTION OF THE BASIS FUNCTIONS
+      INTEGER :: BSORDER
+! L: DEFINES THE ORDER OF THE POLYNOMIAL
+      INTEGER :: POLORDER
+      INTEGER :: NCBAS,NCPOL
+      DOUBLE PRECISION, DIMENSION(NC) :: C,DIFFC
+      DOUBLE PRECISION, ALLOCATABLE, DIMENSION(:) :: BS
+      DOUBLE PRECISION :: Y   
+      DOUBLE PRECISION :: R,POT
+!
+!     CALCULATING THE NUMBER OF COEFFICIENTS FOR THE BASIS SET
+!
+      NCBAS=2*BSORDER+2
+!
+!     CALCULATE THE NUMBER OF COEFFICIENTS FOR A GIVEN POLYNOMIAL ORDER
+!
+      NCPOL=POLORDER
+!
+!     CHECKING - JUST IN CASE
+!
+      IF (NC.NE.(NCPOL+NCBAS)) THEN 
+        WRITE(6,*) "PROBLEMS IN DEFINING PROPER NUMBER OF COEFFICIENTS"
+        WRITE(6,*) "TOTAL NUMBER OF COEFFS ARE NOT SUMMING UP CORRECTLY"
+        STOP
+      END IF
+!
+!     ALLOCATING REQUIRED VECTORS
+!
+      ALLOCATE(BS(NCBAS))
+!
+!     INICIALIZING VECTORS
+!
+      DO I=1,NCBAS
+        BS(I)=0.00D+00
+      END DO
+!
+!     HERE, CALCULATE THE VALUES OF Y'S IN THE BASIS SET
+!
+      DO I=1,NCBAS
+        J=NCPOL+I
+        BS(I)=C(J)
+      END DO
+ 
+      Y=0.00D+00
+      POT=0.00D+00
+
+      DO I=1,NC
+        DIFFC(I)=0.00D+00
+      END DO
+!
+!     SETTING UP BASIS SET
+!
+      CALL BASIS_CONTRACT(1,BSORDER,BS,R,Y)
+      
+      !Y=0.5D+00*(1.0D+00-TANH(C(NC-1)*(R-C(NC))))
+!
+!     CALCULATING THE POTENTIAL
+!
+      DO I=1,POLORDER
+        POT=POT+(Z(1)*Z(2)/R)*C(I)*Y**(DBLE(I))
+        DIFFC(I)=(Z(1)*Z(2)/R)*C(I)*Y**(DBLE(I))
+      END DO
+
+      DEALLOCATE(BS)
+
+      RETURN
+      END 
