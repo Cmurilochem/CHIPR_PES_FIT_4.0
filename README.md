@@ -6,6 +6,8 @@ For diatomic molecules, the code also allows users obtain experimentally-derived
 
 The program performs an automatic global minimum search on the final fitted PES, harmonic vibrational analysis on the global minimum, in addition to provide ready-to-use subroutines containing the fitted n-body terms. These are output as CHIPR_DIAT_FUNC.f90, CHIPR_TRIAT_FUNC.f90 and CHIPR_TETRA_FUNC.f90 for two-body, three-body and four-body terms, respectively.
 
+The source code can be found in "CHIPR-4.0_SOURCE_CODE". Test runs for C2, N2, SiC, C3, SiC2, C3H, and C2H2 are provided as separated directories. 
+
 see https://data.mendeley.com/datasets/8wdv87gt5x/2 to access the original code and publication.
 
 Authors:
