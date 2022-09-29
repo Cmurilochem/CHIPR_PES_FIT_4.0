@@ -1,0 +1,108 @@
+!######################################################################################################
+! SUBROUTINE TO PRINT STRATIFIED ROOT-MEAN-SQUARES DEVIATION 
+!######################################################################################################
+
+      SUBROUTINE STRAT_RMSD(POT,Y,W)
+      USE COMMON_VAR, ONLY : NP,EH2CM
+      IMPLICIT NONE
+      INTEGER :: I,J,K,L,M,CONTW,CONTNW
+      INTEGER, PARAMETER :: NSTRAT=25
+      DOUBLE PRECISION, DIMENSION(NP) :: Y,POT,W,DEV,FVECW,FVECNW
+      DOUBLE PRECISION :: DELTA
+      DOUBLE PRECISION :: MINVALUE,MAXVALUE,STEP
+      DOUBLE PRECISION, DIMENSION(NSTRAT) :: STRAT
+      DOUBLE PRECISION :: MAXDEVW,MAXDEVNW
+      INTEGER, DIMENSION(NSTRAT-1) :: POINTS
+      DOUBLE PRECISION, DIMENSION(NSTRAT-1) :: DSTRAT
+      DOUBLE PRECISION, ALLOCATABLE, DIMENSION(:) :: EDEVW, EDEVNW
+      DOUBLE PRECISION :: SUM,SUMW,RMSDW,RMSDNW 
+
+      DOUBLE PRECISION, DIMENSION(NP) :: SSWW, SSWNW
+      DOUBLE PRECISION, DIMENSION(NP) :: SSWWTOTAL, SSWNWTOTAL 
+!
+!     CALCULATING ABSOLUTE DEVIATIONS FOR EACH POINT 
+!
+      DO I=1,NP
+        FVECW(I)=ABS((Y(I)-POT(I))*W(I))
+        FVECNW(I)=ABS(Y(I)-POT(I))
+      END DO
+!
+!     DEFINING THE INTERVALS
+!
+
+      EH2CM=627.5095D+00
+      
+      DELTA=1.0D+00/EH2CM
+      
+      MINVALUE=MINVAL(Y)-DELTA
+      MAXVALUE=MAXVAL(Y)+DELTA       
+ 
+      STEP=(MAXVALUE-MINVALUE)/(DBLE(NSTRAT)-1.000D+00)
+!
+!     DEFINING EACH STRATUM
+!
+      DO I=1,NSTRAT
+        STRAT(I)=MINVALUE+STEP*(DBLE(I)-1.000D+00)
+      END DO
+!
+!     CALCULATING THE NUMBER OF POINTS IN EACH STRATUM
+!
+      DO I=1,(NSTRAT-1)
+        K=0
+        DO J=1,NP
+          IF (Y(J).GT.STRAT(1) .AND. Y(J).LE.STRAT(I+1)) THEN
+          K=K+1
+          END IF 
+        END DO
+        POINTS(I)=K
+      END DO
+
+      WRITE(25,650)
+
+      DO I=1,(NSTRAT-1)
+        DSTRAT(I)=STRAT(I+1)-STRAT(1)
+        SUM=0.0D+00
+        SUMW=0.0D+00
+        RMSDW=0.0D+00
+        RMSDNW=0.0D+00
+        MAXDEVW=0.0D+00
+        MAXDEVNW=0.00D+00
+        K=0
+        CONTW=0
+        CONTNW=0
+        ALLOCATE(EDEVW(POINTS(I)),EDEVNW(POINTS(I)))
+        DO L=1,POINTS(I)
+          EDEVW(L)=0.00D+00
+          EDEVNW(L)=0.00D+00
+        END DO
+        DO J=1,NP
+          IF (Y(J).GT.STRAT(1) .AND. Y(J).LE.STRAT(I+1)) THEN
+            K=K+1
+            EDEVW(K)=FVECW(J)
+            EDEVNW(K)=FVECNW(J)
+            SUMW=SUMW+EDEVW(K)**2
+            SUM=SUM+EDEVNW(K)**2
+            MAXDEVW=MAXVAL(EDEVW)
+            MAXDEVNW=MAXVAL(EDEVNW)
+            RMSDW=SQRT(SUMW/DBLE(POINTS(I)-1))
+            RMSDNW=SQRT(SUM/DBLE(POINTS(I)-1))
+          END IF
+        END DO
+        DO M=1,POINTS(I)
+          IF (EDEVW(M).GT.RMSDW) THEN
+            CONTW=CONTW+1
+          END IF
+          IF (EDEVNW(M).GT.RMSDNW) THEN
+            CONTNW=CONTNW+1
+          END IF
+        END DO
+        WRITE(25,651) DSTRAT(I)*EH2CM,POINTS(I),MAXDEVNW*EH2CM,RMSDNW*EH2CM,CONTNW  
+        DEALLOCATE(EDEVW,EDEVNW)
+      END DO
+
+ 650  FORMAT (/,43X,"STRATIFIED RMSDs",//,&
+     &          3X,"STRATUM (CM-1)",4X,"# OF POINTS",4X,"MAXDEV (CM-1)",10X,"RMSD (CM-1)",4X,"# OF POINTS WITH DEV>RMSD",/)
+ 651  FORMAT (F15.0,7X,I5,3X,F15.1,7X,F15.1,11X,I5)
+
+      RETURN
+      END
