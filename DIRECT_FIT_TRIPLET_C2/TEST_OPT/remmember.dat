@@ -1,0 +1,2 @@
+ifort pot-aux.f CN.f nr-rw-distr.f -o min.x
+gcc symm.c -o symm.x -lm

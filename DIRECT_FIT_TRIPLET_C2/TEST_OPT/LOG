@@ -1,0 +1,66 @@
+           1
+           2
+   2.50000000000000       0.000000000000000E+000  0.000000000000000E+000
+ -0.232212148397435     
+Looking for the inversion center
+           1 candidates examined
+           0 removed early
+           0 removed during initial mating stage
+           0 removed as duplicates
+           0 removed because of the wrong transformation order
+           0 removed after unsuccessful optimization
+           1 accepted
+Looking for the planes of symmetry
+           2 candidates examined
+           0 removed early
+           0 removed during initial mating stage
+           0 removed as duplicates
+           0 removed because of the wrong transformation order
+           0 removed after unsuccessful optimization
+           2 accepted
+Looking for infinity axis
+           1 candidates examined
+           0 removed early
+           0 removed during initial mating stage
+           0 removed as duplicates
+           0 removed because of the wrong transformation order
+           0 removed after unsuccessful optimization
+           1 accepted
+Looking for C2 axes
+           6 candidates examined
+           4 removed early
+           0 removed during initial mating stage
+           1 removed as duplicates
+           0 removed because of the wrong transformation order
+           0 removed after unsuccessful optimization
+           1 accepted
+Looking for higher axes
+           2 candidates examined
+           2 removed early
+           0 removed during initial mating stage
+           0 removed as duplicates
+           0 removed because of the wrong transformation order
+           0 removed after unsuccessful optimization
+           0 accepted
+Looking for the improper axes
+           2 candidates examined
+           2 removed early
+           0 removed during initial mating stage
+           0 removed as duplicates
+           0 removed because of the wrong transformation order
+           0 removed after unsuccessful optimization
+           0 accepted
+There in an inversion center in the molecule
+     Residual                      Position
+   1.9429e-16 (    1.39433718,   -0.00000000,    0.00000000)
+There are 2 normal axes in the molecule
+     Residual  Order         Direction of the axis                         Supporting point
+  0 2.7756e-17 Inf (-1.00000000,-0.00000000, 0.00000000) (    1.39433718,   -0.00000000,    0.00000000)
+  1 4.6932e-16   2 ( 0.00000000, 0.00000000, 1.00000000) (    1.39433718,   -0.00000000,    0.00000000)
+There are no improper axes in the molecule
+There are 2 planes of symmetry in the molecule
+     Residual          Direction of the normal           Distance
+  0 4.4409e-16 ( 1.00000000, 0.00000000,-0.00000000)     1.39433718
+  1 8.5528e-50 ( 0.00000000, 0.00000000, 1.00000000)     0.00000000
+Molecule has the following symmetry elements: (i) (Cinf) (C2) 2*(sigma) 
+It seems to be the Dinfh point group
