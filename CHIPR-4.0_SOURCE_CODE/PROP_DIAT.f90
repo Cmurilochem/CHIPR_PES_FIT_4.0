@@ -294,7 +294,7 @@
 !
         DO I=1,DUM
           ARG(1)=X(I,NX)
-          CALL CHIPR_DIAT(MBS,L,C,ARG,POT,DC)
+          CALL CHIPR_DIAT(MBS(1),L,C,ARG(1),POT,DC)
           WRITE(22,*) X(I,NX),Y(I),POT
         END DO
 !
@@ -302,7 +302,7 @@
 !
         DO I=1,DUM
           ARG(1)=X(I,NX)
-          CALL CHIPR_DIAT(MBS,L,C,ARG,POT,DC)
+          CALL CHIPR_DIAT(MBS(1),L,C,ARG(1),POT,DC)
           WRITE(24,*) X(I,NX),(Y(I)-POT)*EH2CM
         END DO
 !
@@ -314,7 +314,7 @@
 
         DO I=1,NPC
           R=RDMIN+STEPRD*(DBLE(I)-1.000D+00)
-          CALL CHIPR_DIAT(MBS,L,C,R,POT,DC)
+          CALL CHIPR_DIAT(MBS(1),L,C,R,POT,DC)
           WRITE(23,*) R,POT
         END DO
 
@@ -337,7 +337,7 @@
         DO I=1,DUM
           ARG(1)=X(I,NX)
           P(I)=0.0D+00
-          CALL CHIPR_DIAT(MBS,L,C,ARG,P(I),DC)
+          CALL CHIPR_DIAT(MBS(1),L,C,ARG(1),P(I),DC)
         END DO
 
         CALL STRAT_RMSD(P,Y,W)
