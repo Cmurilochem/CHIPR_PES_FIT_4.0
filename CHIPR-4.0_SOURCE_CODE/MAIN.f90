@@ -124,21 +124,27 @@
 !
 !     INICIALIZING VECTORS - JUST IN CASE
 !
-            DO J=1,NC
-              C(J)=0.000D+00
-            END DO
+            C=0.000D+00
+            X=0.000D+00
+            Y=0.000D+00     
+            W=0.0000D+00 
+            FVEC=0.0000D+00  
+            
+            !DO J=1,NC
+            !  C(J)=0.000D+00
+            !END DO            
 
-            DO J=1,NP
-              DO K=1,NXRED
-                X(J,K)=0.000D+00
-              END DO
-            END DO
+            !DO J=1,NP
+            !  DO K=1,NXRED
+            !    X(J,K)=0.000D+00
+            !  END DO
+            !END DO
 
-            DO J=1,NP
-             Y(J)=0.000D+00          
-             W(J)=0.0000D+00 
-             FVEC(J)=0.00000D+00
-            END DO
+            !DO J=1,NP
+            ! Y(J)=0.000D+00          
+            ! W(J)=0.0000D+00 
+            ! FVEC(J)=0.00000D+00
+            !END DO
 !
 !     PASSING ALL THE INFORMATION REGARDING TO THE 1D CUTS TO RELEVANT VECTORS
 !
@@ -346,7 +352,7 @@
 
   5   FORMAT (80("#"),/,80("#"),//,6X,"CHIPR-4.0: A GENERAL CODE FOR FITTING GLOBAL PESs VIA CHIPR METHOD",//,&
  &            20X,"C. M. R. ROCHA AND A. J. C. VARANDAS",/,&
- &            27X,"TO BE SUBMITTED (2020)"/)
+ &            19X,"COMPUT. PHYS. COMMUN. 258, 107556 (2021)"/)
   6   FORMAT (80("#"),/,80("#"),//,13X,"CHIPR PES FOR A TETRATOMIC MOLECULE OF TYPE -->",1X,A5,/)
   7   FORMAT (80("#"),/,80("#"),//,13X,"CHIPR PES FOR A TRIATOMIC MOLECULE OF TYPE -->",1X,A3,/)
   8   FORMAT (80("#"),/,80("#"),//,20X,"CHIPR CURVE FOR A DIATOMIC MOLECULE",/)
