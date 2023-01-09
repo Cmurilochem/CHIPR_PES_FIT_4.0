@@ -1,7 +1,5 @@
 # CHIPR-4.0
 
------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 CHIPR-4.0 is a general software to fit global potential energy surfaces of diatomic, triatomic and tetratomic molecules using ab initio data points as calibrating set and the Combined-Hyperbolic-Inverse-Power-Representation (CHIPR) method.
 
 For diatomic molecules, the code also allows users obtain experimentally-derived potential energy curves by performing a direct-fit to available spectroscopic data. 
